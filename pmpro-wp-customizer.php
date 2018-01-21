@@ -16,14 +16,9 @@ namespace PMPro_WP_Customizer;
  * @return type Words
  */
 require_once( 'autoload.php' );
-require_once( __DIR__ . '/register-helper.php' );
+require_once( __DIR__ . '/pmpro-register-helper.php' );
 inc\classes\PMPro_WP_Customizer::init();
 
-// inc\classes\PMPro_WP_Customizer_Additions::init();
-// inc\classes\Central_Toggle_Control::init();
-// include( 'inc/functions/class-central-toggle-control.php' );
-// inc\classes\Setup_Functions::init();
-// new inc\classes\Central_Toggle_Control();
 /**
  * Enqueue scripts for the customizer pane/controls/previewer.
  */

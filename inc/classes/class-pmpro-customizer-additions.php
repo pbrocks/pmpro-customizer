@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
  * @package    PackageName
  * @author     Original Author <author@example.com>
  */
-class PMPro_WP_Customizer_Additions {
+class PMPro_Customizer_Additions {
 
 	/**
 	 * Description
