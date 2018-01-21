@@ -115,11 +115,10 @@ class PMPro_Customizer_Redirects {
 	 * @param object $user Logged user's data.
 	 * @return string
 	 */
-
-	function pmpro_login_redirect( $redirect_to, $request, $user ) {
-		// is there a user to check?
+	public static function pmpro_login_redirect( $redirect_to, $request, $user ) {
+		// Check for registered user.
 		if ( isset( $user->roles ) && is_array( $user->roles ) ) {
-			// check for admins
+			// Do something different with admins.
 			if ( in_array( 'administrator', $user->roles ) ) {
 				// redirect them to the default place
 				return $redirect_to;
@@ -131,9 +130,8 @@ class PMPro_Customizer_Redirects {
 		}
 	}
 
-	add_filter( 'login_redirect', '', 10, 3 );
 	/**
-	 * Redirect user after successful login.
+	 * Redirect Multisite user after successful login.
 	 *
 	 * @param string $redirect_to URL to redirect to.
 	 * @param string $request URL the user is coming from.

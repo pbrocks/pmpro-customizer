@@ -25,7 +25,6 @@ wp.customize.bind( 'ready', function() {
 		params: {
 			title: 'Registr Helpr (Dynamic)',
 			type: 'register_helper_items', // For CSS class name.
-			priority: 100,
 			active: true,
 			customizeAction: 'You are customizing:'
 		}
@@ -33,6 +32,6 @@ wp.customize.bind( 'ready', function() {
 	wp.customize.section.add( section.id, section ).panel('pmpro_customizer_panel');
 	// https://code.tutsplus.com/tutorials/customizer-javascript-apis-the-previewer--cms-27313
 	// Change a Section priority
-	wp.customize.section( 'memberlite_theme_options' ).panel('pmpro_customizer_panel');
+	wp.customize.section( 'memberlite_theme_options' ).priority( 1 ).panel('pmpro_customizer_panel');
 } );
 

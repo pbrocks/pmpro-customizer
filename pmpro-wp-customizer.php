@@ -18,6 +18,8 @@ namespace PMPro_WP_Customizer;
 require_once( 'autoload.php' );
 require_once( __DIR__ . '/pmpro-register-helper.php' );
 inc\classes\PMPro_WP_Customizer::init();
+inc\classes\WPSE_286375_Plugin::init();
+inc\classes\PMPro_Customizer_Redirects::init();
 
 /**
  * Enqueue scripts for the customizer pane/controls/previewer.

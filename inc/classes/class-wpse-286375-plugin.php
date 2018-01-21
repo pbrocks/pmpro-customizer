@@ -1,4 +1,13 @@
 <?php
+
+namespace PMPro_WP_Customizer\inc\classes;
+
+defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
+
+if ( ! class_exists( 'WP_Customize_Control' ) ) {
+	return null;
+}
+
 /**
  * Plugin: WPSE 286375
  * Description: A dynamic dropdown-pages control.
@@ -16,24 +25,22 @@
  * Class WPSE_286375_Plugin
  */
 class WPSE_286375_Plugin {
-
 	/**
 	 * Init.
 	 */
-	public function init() {
-		add_action( 'customize_register', array( $this, 'customize_register' ) );
-
-		add_action( 'customize_controls_print_footer_scripts', array( $this, 'print_control_templates' ) );
-		add_action( 'customize_controls_enqueue_scripts', array( $this, 'enqueue_controls_scripts' ) );
+	public static function init() {
+		add_action( 'customize_register', array( __CLASS__, 'customize_register' ) );
+		// add_action( 'customize_controls_print_footer_scripts', array( __CLASS__, 'print_control_templates' ) );
+		// add_action( 'customize_controls_enqueue_scripts', array( __CLASS__, 'enqueue_controls_scripts' ) );
 	}
 
 	/**
 	 * Customize register.
 	 *
-	 * @param WP_Customize_Manager $wp_customize Manager.
+	 * @param \WP_Customize_Manager $pmpro_manager Manager.
 	 */
-	public function customize_register( WP_Customize_Manager $wp_customize ) {
-		$wp_customize->add_setting(
+	public static function customize_register( \WP_Customize_Manager $pmpro_manager ) {
+		$pmpro_manager->add_setting(
 			'favorite_page', array(
 				'default' => 0,
 				'sanitize_callback' => function( $value ) {
@@ -53,9 +60,9 @@ class WPSE_286375_Plugin {
 	/**
 	 * Enqueue controls scripts.
 	 */
-	public function enqueue_controls_scripts() {
+	public static function enqueue_controls_scripts() {
 		$handle = 'wpse-286375-controls';
-		wp_enqueue_script( $handle, plugin_dir_url( __FILE__ ) . 'wpse-286375-controls.js', array( 'customize-controls' ) );
+		wp_enqueue_script( $handle, plugin_dir_url( __FILE__ ) . 'inc/js/wpse-286375-controls.js', array( 'customize-controls' ) );
 		$exports = array(
 			'label' => __( 'Featured Page', 'wpse-286375' ),
 			'description' => __( 'Select your a page that you\'d like to feature on the site.', 'wpse-286375' ),
@@ -67,10 +74,10 @@ class WPSE_286375_Plugin {
 	/**
 	 * Print templates.
 	 *
-	 * @global WP_Customize_Manager $wp_customize
+	 * @global \WP_Customize_Manager $pmpro_manager
 	 */
-	public function print_control_templates() {
-		global $wp_customize;
+	public static function print_control_templates() {
+		global $pmpro_manager;
 		?>
 
 		<script type="text/html" id="tmpl-customize-control-dropdown-pages-content">
@@ -134,7 +141,7 @@ class WPSE_286375_Plugin {
 
 			// Even more hacikly add auto-draft page stubs.
 			// @todo Eventually this should be removed in favor of the pages being injected into the underlying get_pages() call. See <https://github.com/xwp/wp-customize-posts/pull/250>.
-			$nav_menus_created_posts_setting = $wp_customize->get_setting( 'nav_menus_created_posts' );
+			$nav_menus_created_posts_setting = $pmpro_manager->get_setting( 'nav_menus_created_posts' );
 			if ( $nav_menus_created_posts_setting && current_user_can( 'publish_pages' ) ) {
 				$auto_draft_page_options = '';
 				foreach ( $nav_menus_created_posts_setting->value() as $auto_draft_page_id ) {

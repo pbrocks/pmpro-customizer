@@ -103,26 +103,6 @@ class PMPro_WP_Customizer {
 			)
 		);
 
-		$pmpro_manager->add_setting(
-			'pmpro[the_footer]', array(
-				'default' => 'footer-text default text',
-				'type' => 'option',
-				'transport' => 'refresh', // refresh (default), postMessage
-			// 'capability' => 'edit_theme_options',
-			// 'sanitize_callback' => 'sanitize_key'
-			)
-		);
-
-		$pmpro_manager->add_control(
-			'pmpro[the_footer]', array(
-				'section'   => 'pmpro_section',
-				'type'   => 'text', // text (default), checkbox, radio, select, dropdown-pages
-			'label'       => 'Default Footer Text',
-			'settings'    => 'pmpro[the_footer]',
-			'description' => 'Description of this text input setting in ' . __FUNCTION__ . ' for Default Footer Text',
-			)
-		);
-
 		/**
 		 * Radio control
 		 */
@@ -144,6 +124,45 @@ class PMPro_WP_Customizer {
 					'3' => 'right',
 				),
 				'priority'    => 11,
+			)
+		);
+
+			$pmpro_manager->add_setting(
+				'pmpro[the_footer]', array(
+					'default' => 'footer-text default text',
+					'type' => 'option',
+					'transport' => 'refresh', // refresh (default), postMessage
+				// 'capability' => 'edit_theme_options',
+				// 'sanitize_callback' => 'sanitize_key'
+				)
+			);
+			$pmpro_manager->add_control(
+				'pmpro[the_footer]', array(
+					'section'   => 'pmpro_section',
+					'type'   => 'text', // text (default), checkbox, radio, select, dropdown-pages
+				'label'       => 'Default Footer Text',
+				'settings'    => 'pmpro[the_footer]',
+				'description' => 'Description of this text input setting in ' . __FUNCTION__ . ' for Default Footer Text',
+				)
+			);
+
+		$pmpro_manager->add_setting(
+			'pmpro[the_footer]', array(
+				'default' => 'footer-text default text',
+				'type' => 'option',
+				'transport' => 'refresh', // refresh (default), postMessage
+			// 'capability' => 'edit_theme_options',
+			// 'sanitize_callback' => 'sanitize_key'
+			)
+		);
+
+		$pmpro_manager->add_control(
+			'pmpro[the_footer]', array(
+				'section'   => 'pmpro_section',
+				'type'   => 'text', // text (default), checkbox, radio, select, dropdown-pages
+			'label'       => 'Default Footer Text',
+			'settings'    => 'pmpro[the_footer]',
+			'description' => 'Description of this text input setting in ' . __FUNCTION__ . ' for Default Footer Text',
 			)
 		);
 
@@ -208,13 +227,31 @@ class PMPro_WP_Customizer {
 				$pmpro_manager,
 				'pmpro_redirects_setting', array(
 					'settings'    => 'pmpro_redirects_setting',
-					'label'       => __( 'PMPro Redirects' ),
+					'label'       => __( 'PMPro Redirects', 'pmpro-customizer' ),
 					'description' => 'Adds a button in upper right corner of front end pages to toggle diagnostic infomation.',
 					'section'     => 'pmpro_redirects_section',
 					'type'        => 'ios',
 				)
 			)
 		);
+
+		$pmpro_manager->add_setting(
+			'pmpro_dropdown_page_redirect_1', array(
+				'capability' => 'edit_theme_options',
+				// 'sanitize_callback' => 'sanitize_dropdown_pages',
+			)
+		);
+
+		$pmpro_manager->add_control(
+			'pmpro_dropdown_page_redirect_1', array(
+				'type' => 'dropdown-pages',
+				'section' => 'pmpro_redirects_section',
+				'label' => __( 'Dropdown Page One', 'pmpro-customizer' ),
+				'settings' => 'pmpro_dropdown_page_redirect_1',
+				'description' => __( 'This is the Redirect 1 dropdown page option.<h4>I want this to be dependent on the Redirect toggle being set to yes.</h4>', 'pmpro-customizer' ),
+			)
+		);
+
 	}
 
 	public static function return_something() {
@@ -251,7 +288,13 @@ class PMPro_WP_Customizer {
 			$wp_customize->set_preview_url( '/customizer-dev-page/' );
 		// }
 	}
+	private static function sanitize_dropdown_pages( $page_id, $setting ) {
+		// Ensure $input is an absolute integer.
+		$page_id = absint( $page_id );
 
+		// If $page_id is an ID of a published page, return it; otherwise, return the default.
+		return ( 'publish' == get_post_status( $page_id ) ? $page_id : $setting->default );
+	}
 	/**
 	 * A section to show how you use the default customizer controls in WordPress
 	 *
