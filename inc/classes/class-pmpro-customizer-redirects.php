@@ -17,17 +17,67 @@ defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
  * @author     Original Author <author@example.com>
  */
 class PMPro_Customizer_Redirects {
-
 	/**
 	 * Description
 	 *
 	 * @return void
 	 */
 	public static function init() {
+		add_action( 'admin_menu', array( __CLASS__, 'pmpro_customizer_plugin_menu' ) );
 		// add_action( 'template_redirect', array( __CLASS__, 'pmpromh_template_redirect_homepage' ) );
 		add_filter( 'login_redirect', array( __CLASS__, 'pmpro_login_redirect' ), 10, 3 );
-		add_filter( 'login_redirect', array( __CLASS__, 'pmpro_multisite_login_redirect' ), 10, 3 );
+		// add_filter( 'login_redirect', array( __CLASS__, 'pmpro_multisite_login_redirect' ), 10, 3 );
 		// add_filter( 'login_redirect', 'pmpromh_login_redirect', 10, 3 );
+		add_shortcode( 'customizer-theme-mods', array( __CLASS__, 'pmpro_customizer_theme_mods' ), 20 );
+	}
+	/**
+	 * Add a page to the dashboard menu.
+	 */
+	public static function pmpro_customizer_plugin_menu() {
+		add_dashboard_page( __( 'PMPro Dashboard', 'pmpro-customizer' ), __( 'PMPro Dash', 'pmpro-customizer' ), 'manage_options', 'pmpro-customizer-dash.php', array( __CLASS__, 'pmpro_customizer_dash_page' ) );
+
+	}
+	public static function pmpro_customizer_dash_page() {
+			global $current_user;
+		echo '<div class="wrap">';
+		echo '<h2>' . __FUNCTION__ . '</h2>';
+		echo '<h4>' . self::pmpro_customizer_redirect_1() . '</h4>';
+		if ( is_user_logged_in() && function_exists( 'pmpro_hasMembershipLevel' ) && pmpro_hasMembershipLevel() ) {
+			$current_user->membership_level = pmpro_getMembershipLevelForUser( $current_user->ID );
+			echo '<h4>Current user\'s Membership Level: <span style="color:maroon;">' . $current_user->membership_level->name . '</span></h4>';
+		}
+		$mods = get_theme_mods();
+		if ( get_theme_mod( 'pmpro_dropdown_page_redirect_1' ) ) {
+			echo get_permalink( get_theme_mod( 'pmpro_dropdown_page_redirect_1' ) );
+		}
+		echo '<pre>';
+		print_r( $mods );
+		echo '</pre>';
+		echo '</div>';
+	}
+
+	public static function pmpro_customizer_theme_mods() {
+		global $current_user;
+		$mods = get_theme_mods();
+		if ( get_theme_mod( 'pmpro_dropdown_page_redirect_1' ) ) {
+			echo get_permalink( get_theme_mod( 'pmpro_dropdown_page_redirect_1' ) );
+		}
+		echo '<h4>' . self::pmpro_customizer_redirect_1() . '</h4>';
+		if ( is_user_logged_in() && function_exists( 'pmpro_hasMembershipLevel' ) && pmpro_hasMembershipLevel() ) {
+			$current_user->membership_level = pmpro_getMembershipLevelForUser( $current_user->ID );
+			echo '<h4>Current user\'s Membership Level: <span style="color:maroon;">' . $current_user->membership_level->name . '</span></h4>';
+		}
+		echo '<pre>';
+		print_r( $mods );
+		echo '</pre>';
+	}
+
+	public static function pmpro_customizer_redirect_1() {
+		$redirect_url = '';
+		if ( get_theme_mod( 'pmpro_dropdown_page_redirect_1' ) ) {
+			$redirect_url = get_permalink( get_theme_mod( 'pmpro_dropdown_page_redirect_1' ) );
+		}
+		return $redirect_url;
 	}
 
 	/**
@@ -116,14 +166,15 @@ class PMPro_Customizer_Redirects {
 	 * @return string
 	 */
 	public static function pmpro_login_redirect( $redirect_to, $request, $user ) {
+		$redirect_to = self::pmpro_customizer_redirect_1();
 		// Check for registered user.
 		if ( isset( $user->roles ) && is_array( $user->roles ) ) {
 			// Do something different with admins.
 			if ( in_array( 'administrator', $user->roles ) ) {
 				// redirect them to the default place
-				return $redirect_to;
+				return '/customizer-dev-page/';
 			} else {
-				return home_url();
+				return '/sample-page/';
 			}
 		} else {
 			return $redirect_to;

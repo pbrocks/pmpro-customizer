@@ -21,6 +21,7 @@ class PMPro_WP_Customizer {
 	public static function engage_the_customizer( $pmpro_manager ) {
 		self::pmpro_panel( $pmpro_manager );
 		self::pmpro_section( $pmpro_manager );
+		self::pmpro_redirects_manager( $pmpro_manager );
 		self::pmpro_customizer_manager( $pmpro_manager );
 		self::create_customizer_dev_page( $pmpro_manager );
 	}
@@ -66,15 +67,16 @@ class PMPro_WP_Customizer {
 		);
 
 		$pmpro_manager->add_setting(
-			'page_comment_toggle', array(
+			'show_controls_toggle', array(
 				'default' => 1,
+				'type'    => 'option',
 			)
 		);
 
 		$pmpro_manager->add_control(
 			new Soderland_Toggle_Control(
 				$pmpro_manager,
-				'page_comment_toggle', array(
+				'show_controls_toggle', array(
 					'label'     => __( 'Show PMPro Controls', 'pmpro-customizer' ),
 					'section'   => 'pmpro_section',
 					'priority'  => 10,
@@ -176,6 +178,15 @@ class PMPro_WP_Customizer {
 	 */
 	public static function pmpro_customizer_manager( $pmpro_manager ) {
 
+		$pmpro_manager->add_section(
+			'pmpro_customizer_section' , array(
+				'title'      => __( 'PMPro Options', 'pmpro-customizer' ),
+				'priority'   => 10,
+				'panel'          => 'pmpro_customizer_panel',
+				'description'       => __( 'Configure PMPro options for ' . esc_url_raw( home_url() ), 'pmpro-customizer' ),
+			)
+		);
+
 		$pmpro_manager->add_setting(
 			'toggle_setting_1',
 			array(
@@ -190,21 +201,21 @@ class PMPro_WP_Customizer {
 				array(
 					'settings'    => 'toggle_setting_1',
 					'label'       => __( 'Toggle Setting One', 'pmpro-customizer' ),
-					'section'     => 'content_options_section',
+					'section'     => 'pmpro_customizer_section',
 					'type'        => 'ios',
 					'description' => __( 'Configure advanced settings in ' . __FILE__ , 'pmpro-customizer' ),
 				)
 			)
 		);
+	}
 
-		$pmpro_manager->add_section(
-			'content_options_section' , array(
-				'title'      => __( 'PMPro Options', 'pmpro-customizer' ),
-				'priority'   => 10,
-				'panel'          => 'pmpro_customizer_panel',
-				'description'       => __( 'Configure PMPro options for ' . esc_url_raw( home_url() ), 'pmpro-customizer' ),
-			)
-		);
+	/**
+	 * Customizer manager demo
+	 *
+	 * @param  WP_Customizer_Manager $pmpro_manager
+	 * @return void
+	 */
+	public static function pmpro_redirects_manager( $pmpro_manager ) {
 
 		$pmpro_manager->add_section(
 			'pmpro_redirects_section', array(
@@ -217,7 +228,7 @@ class PMPro_WP_Customizer {
 		);
 
 		$pmpro_manager->add_setting(
-			'pmpro_redirects_setting',
+			'pmpro_enable_redirects',
 			array(
 				'default'    => false,
 			)
@@ -225,8 +236,8 @@ class PMPro_WP_Customizer {
 		$pmpro_manager->add_control(
 			new Soderland_Toggle_Control(
 				$pmpro_manager,
-				'pmpro_redirects_setting', array(
-					'settings'    => 'pmpro_redirects_setting',
+				'pmpro_enable_redirects', array(
+					'settings'    => 'pmpro_enable_redirects',
 					'label'       => __( 'PMPro Redirects', 'pmpro-customizer' ),
 					'description' => 'Adds a button in upper right corner of front end pages to toggle diagnostic infomation.',
 					'section'     => 'pmpro_redirects_section',
