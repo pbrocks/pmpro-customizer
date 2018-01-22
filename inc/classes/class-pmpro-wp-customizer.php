@@ -41,7 +41,7 @@ class PMPro_WP_Customizer {
 		$pmpro_manager->add_panel(
 			'pmpro_customizer_panel', array(
 				'priority' => 10,
-				'capability' => 'edit_theme_options',
+				'capability' => 'manage_options',
 				'description' => 'Wnat to switch pages via javascript',
 				'title' => __( 'PMPro Admin Panel', 'pmpro-customizer' ),
 			)
@@ -90,7 +90,7 @@ class PMPro_WP_Customizer {
 				'default' => 'header-text default text',
 				'type' => 'option',
 				'transport' => 'refresh', // refresh (default), postMessage
-			// 'capability' => 'edit_theme_options',
+			// 'capability' => 'manage_options',
 			// 'sanitize_callback' => 'sanitize_key'
 			)
 		);
@@ -134,7 +134,7 @@ class PMPro_WP_Customizer {
 					'default' => 'footer-text default text',
 					'type' => 'option',
 					'transport' => 'refresh', // refresh (default), postMessage
-				// 'capability' => 'edit_theme_options',
+				// 'capability' => 'manage_options',
 				// 'sanitize_callback' => 'sanitize_key'
 				)
 			);
@@ -153,7 +153,7 @@ class PMPro_WP_Customizer {
 				'default' => 'footer-text default text',
 				'type' => 'option',
 				'transport' => 'refresh', // refresh (default), postMessage
-			// 'capability' => 'edit_theme_options',
+			// 'capability' => 'manage_options',
 			// 'sanitize_callback' => 'sanitize_key'
 			)
 		);
@@ -220,7 +220,7 @@ class PMPro_WP_Customizer {
 		$pmpro_manager->add_section(
 			'pmpro_redirects_section', array(
 				'priority' => 10,
-				'capability' => 'edit_theme_options',
+				'capability' => 'manage_options',
 				'title' => __( 'PMPro Redirects', 'pmpro-customizer' ),
 				'description' => __( '<h4>Turn on Redirect information.</h4>', 'pmpro-customizer' ),
 				'panel' => 'pmpro_customizer_panel',
@@ -231,6 +231,7 @@ class PMPro_WP_Customizer {
 			'pmpro_enable_redirects',
 			array(
 				'default'    => false,
+				'type'       => 'option',
 			)
 		);
 		$pmpro_manager->add_control(
@@ -239,30 +240,86 @@ class PMPro_WP_Customizer {
 				'pmpro_enable_redirects', array(
 					'settings'    => 'pmpro_enable_redirects',
 					'label'       => __( 'PMPro Redirects', 'pmpro-customizer' ),
-					'description' => 'Adds a button in upper right corner of front end pages to toggle diagnostic infomation.',
+					'description' => '<h4>I want this to be dependent on the Redirect toggle being set to yes.</h4>',
 					'section'     => 'pmpro_redirects_section',
 					'type'        => 'ios',
 				)
 			)
 		);
 
+		$count_levels = count( pmpro_getAllLevels() );
+
+		$i = 1;
+		while ( $i < $count_levels + 1 ) {
+			$pmpro_manager->add_setting(
+				'pmpro_redirect_for_level_' . $i, array(
+					'capability' => 'manage_options',
+					'type'       => 'option',
+					// 'sanitize_callback' => 'sanitize_dropdown_pages',
+				)
+			);
+
+			$pmpro_manager->add_control(
+				'pmpro_redirect_for_level_' . $i, array(
+					'type' => 'dropdown-pages',
+					'section' => 'pmpro_redirects_section',
+					'label' => __( 'Redirect for Level ' . $i, 'pmpro-customizer' ),
+					'settings' => 'pmpro_redirect_for_level_' . $i,
+					'description' => __( 'Select a page as the redirect url for level ' . $i . ' after successful login.', 'pmpro-customizer' ),
+				)
+			);
+			$i++;
+		}
+
+		/**
+		 * Radio control
+		 */
 		$pmpro_manager->add_setting(
-			'pmpro_dropdown_page_redirect_1', array(
-				'capability' => 'edit_theme_options',
-				// 'sanitize_callback' => 'sanitize_dropdown_pages',
+			'menu_radio', array(
+				'default'        => '2',
 			)
 		);
 
 		$pmpro_manager->add_control(
-			'pmpro_dropdown_page_redirect_1', array(
-				'type' => 'dropdown-pages',
-				'section' => 'pmpro_redirects_section',
-				'label' => __( 'Dropdown Page One', 'pmpro-customizer' ),
-				'settings' => 'pmpro_dropdown_page_redirect_1',
-				'description' => __( 'This is the Redirect 1 dropdown page option.<h4>I want this to be dependent on the Redirect toggle being set to yes.</h4>', 'pmpro-customizer' ),
+			'menu_radio', array(
+				'section'     => 'pmpro_redirects_section',
+				'type'        => 'select',
+				'label'       => 'Menu Alignment Radio Buttons',
+				'description' => 'Description of this select setting in ' . __FUNCTION__,
+				'choices'     => array(
+					'1' => 'left',
+					'2' => 'center',
+					'3' => 'right',
+				),
+				'priority'    => 11,
 			)
 		);
 
+		$all_posts_list = array();
+		$args = array(
+			'post_type' => 'wpcf7_contact_form',
+		);
+		// $all_posts = get_posts( $args );
+		$all_posts = get_posts();
+		foreach ( $all_posts as $cf7form ) {
+			$all_posts_list[ $cf7form->post_title ] = $cf7form->post_title;
+		}
+
+		$pmpro_manager->add_setting(
+			'posts_select', array(
+				'transport' => 'postMessage',
+			)
+		);
+		$pmpro_manager->add_control(
+			'posts_select', array(
+				'label'    => esc_html__( 'Posts Select form', 'pmpro_customizer' ),
+				'type'     => 'select',
+				'description'     => 'Would need to get all post types in addition to posts',
+				'section'  => 'pmpro_redirects_section',
+				'priority' => 44,
+				'choices'  => $all_posts_list,
+			)
+		);
 	}
 
 	public static function return_something() {
