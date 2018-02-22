@@ -9,7 +9,7 @@ class PMPro_WP_Customizer {
 		add_action( 'customize_register', array( __CLASS__, 'engage_the_customizer' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'customizer_enqueue' ) );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'customizer_enqueue' ) );
-		add_action( 'customize_controls_init', array( __CLASS__, 'set_customizer_preview_url' ) );
+		// add_action( 'customize_controls_init', array( __CLASS__, 'set_customizer_preview_url' ) );
 	}
 
 		/**
@@ -202,7 +202,7 @@ class PMPro_WP_Customizer {
 				'type'   => 'text', // text (default), checkbox, radio, select, dropdown-pages
 			'label'       => 'First Text Change Input',
 			'settings'    => 'pmpro_text_input_1',
-			'description' => 'Description of this text input setting in ' . __FUNCTION__ . ' for Text Changes',
+			'description' => 'Text to change in the plugin or an add on',
 			)
 		);
 		$pmpro_manager->add_setting(
@@ -221,12 +221,12 @@ class PMPro_WP_Customizer {
 				'type'   => 'text', // text (default), checkbox, radio, select, dropdown-pages
 			'label'       => 'First Text Change Output',
 			'settings'    => 'pmpro_text_output_1',
-			'description' => 'Description of this text input setting in ' . __FUNCTION__ . ' for Text Changes',
+			'description' => 'What you want the text to say:',
 			)
 		);
 		$pmpro_manager->add_setting(
 			'pmpro_text_domain_1', array(
-				'default' => 'Where is the translatable text?',
+				'default' => 'paid-memberships-pro',
 				'type' => 'option',
 				'transport' => 'refresh', // refresh (default), postMessage
 			// 'capability' => 'edit_theme_options',
@@ -238,65 +238,69 @@ class PMPro_WP_Customizer {
 			'pmpro_text_domain_1', array(
 				'section'   => 'pmpro_text_changes',
 				'type'   => 'text', // text (default), checkbox, radio, select, dropdown-pages
-			'label'       => 'paid-memberships-pro',
+			'label'       => 'Where is the translatable text?',
 			'settings'    => 'pmpro_text_domain_1',
-			'description' => 'Domain of this text change',
+			'description' => 'Domain of this text change, either the main plugin or an add on:',
 			)
 		);
-		// $pmpro_manager->add_setting(
-		// 'pmpro_text_input_2', array(
-		// 'default' => 'What the plugin says',
-		// 'type' => 'option',
-		// 'transport' => 'refresh', // refresh (default), postMessage
-		// 'capability' => 'edit_theme_options',
-		// 'sanitize_callback' => 'sanitize_key'
-		// )
-		// );
-		// $pmpro_manager->add_control(
-		// 'pmpro_text_input_2', array(
-		// 'section'   => 'pmpro_text_changes',
-		// 'type'   => 'text', // text (default), checkbox, radio, select, dropdown-pages
-		// 'label'       => 'Second Text Change Input',
-		// 'settings'    => 'pmpro_text_input_2',
-		// 'description' => 'Description of this text input setting in ' . __FUNCTION__ . ' for Text Changes',
-		// )
-		// );
-		// $pmpro_manager->add_setting(
-		// 'pmpro_text_output_2', array(
-		// 'default' => 'What you want to say',
-		// 'type' => 'option',
-		// 'transport' => 'refresh', // refresh (default), postMessage
-		// 'capability' => 'edit_theme_options',
-		// 'sanitize_callback' => 'sanitize_key'
-		// )
-		// );
-		// $pmpro_manager->add_control(
-		// 'pmpro_text_output_2', array(
-		// 'section'   => 'pmpro_text_changes',
-		// 'type'   => 'text', // text (default), checkbox, radio, select, dropdown-pages
-		// 'label'       => 'Second Text Change Output',
-		// 'settings'    => 'pmpro_text_output_2',
-		// 'description' => 'Description of this text input setting in ' . __FUNCTION__ . ' for Text Changes',
-		// )
-		// );
-		// $pmpro_manager->add_setting(
-		// 'pmpro_text_domain_2', array(
-		// 'default' => 'What the plugin says',
-		// 'type' => 'option',
-		// 'transport' => 'refresh', // refresh (default), postMessage
-		// 'capability' => 'edit_theme_options',
-		// 'sanitize_callback' => 'sanitize_key'
-		// )
-		// );
-		// $pmpro_manager->add_control(
-		// 'pmpro_text_domain_2', array(
-		// 'section'   => 'pmpro_text_changes',
-		// 'type'   => 'text', // text (default), checkbox, radio, select, dropdown-pages
-		// 'label'       => 'Second Text Change Domain',
-		// 'settings'    => 'pmpro_text_domain_2',
-		// 'description' => 'Domain of this text change',
-		// )
-		// );
+
+		$pmpro_manager->add_setting(
+			'pmpro_text_input_2', array(
+				'default' => 'What the plugin says',
+				'type' => 'option',
+				'transport' => 'refresh', // refresh (default), postMessage
+			// 'capability' => 'edit_theme_options',
+			// 'sanitize_callback' => 'sanitize_key'
+			)
+		);
+
+		$pmpro_manager->add_control(
+			'pmpro_text_input_2', array(
+				'section'   => 'pmpro_text_changes',
+				'type'   => 'text', // text (default), checkbox, radio, select, dropdown-pages
+			'label'       => 'Second Text Change Input',
+			'settings'    => 'pmpro_text_input_2',
+			'description' => 'Text to change in the plugin or an add on',
+			)
+		);
+		$pmpro_manager->add_setting(
+			'pmpro_text_output_2', array(
+				'default' => 'What you want to say',
+				'type' => 'option',
+				'transport' => 'refresh', // refresh (default), postMessage
+			// 'capability' => 'edit_theme_options',
+			// 'sanitize_callback' => 'sanitize_key'
+			)
+		);
+
+		$pmpro_manager->add_control(
+			'pmpro_text_output_2', array(
+				'section'   => 'pmpro_text_changes',
+				'type'   => 'text', // text (default), checkbox, radio, select, dropdown-pages
+			'label'       => 'Second Text Change Output',
+			'settings'    => 'pmpro_text_output_2',
+			'description' => 'What you want the text to say:',
+			)
+		);
+		$pmpro_manager->add_setting(
+			'pmpro_text_domain_2', array(
+				'default' => 'paid-memberships-pro',
+				'type' => 'option',
+				'transport' => 'refresh', // refresh (default), postMessage
+			// 'capability' => 'edit_theme_options',
+			// 'sanitize_callback' => 'sanitize_key'
+			)
+		);
+
+		$pmpro_manager->add_control(
+			'pmpro_text_domain_2', array(
+				'section'   => 'pmpro_text_changes',
+				'type'   => 'text', // text (default), checkbox, radio, select, dropdown-pages
+			'label'       => 'Where is the translatable text?',
+			'settings'    => 'pmpro_text_domain_2',
+			'description' => 'Domain of this text change, either the main plugin or an add on:',
+			)
+		);
 	}
 
 	/**
