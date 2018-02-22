@@ -2,3 +2,7 @@
 	color: #700!important;
 	font-size: .9rem;
 }
+#customize-control-pmpro_text_input_1 > .customize-control-title,
+#customize-control-pmpro_text_input_2 > .customize-control-title {
+	color: #700;
+}
