@@ -17,6 +17,7 @@ namespace PMPro_WP_Customizer;
  */
 require_once( 'autoload.php' );
 require_once( __DIR__ . '/pmpro-register-helper.php' );
+inc\classes\PMPro_Customizer_Additions::init();
 inc\classes\PMPro_WP_Customizer::init();
 
 /**

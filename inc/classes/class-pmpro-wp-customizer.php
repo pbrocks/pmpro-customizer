@@ -21,8 +21,9 @@ class PMPro_WP_Customizer {
 	public static function engage_the_customizer( $pmpro_manager ) {
 		self::pmpro_panel( $pmpro_manager );
 		self::pmpro_section( $pmpro_manager );
+		self::pmpro_text_changes( $pmpro_manager );
 		self::pmpro_customizer_manager( $pmpro_manager );
-		self::create_customizer_dev_page( $pmpro_manager );
+		// self::create_customizer_dev_page( $pmpro_manager );
 	}
 
 	public static function customizer_enqueue() {
@@ -97,14 +98,14 @@ class PMPro_WP_Customizer {
 			'pmpro[the_header]', array(
 				'section'   => 'pmpro_section',
 				'type'   => 'text', // text (default), checkbox, radio, select, dropdown-pages
-			'label'       => 'Default Header Text',
+			'label'       => 'Change Header Text',
 			'settings'    => 'pmpro[the_header]',
-			'description' => 'Description of this text input setting in ' . __FUNCTION__ . ' for Default Header Text',
+			'description' => 'Description of this text input setting in ' . __FUNCTION__ . ' for Header Text',
 			)
 		);
 
 		$pmpro_manager->add_setting(
-			'pmpro[the_footer]', array(
+			'pmpro_footer_text', array(
 				'default' => 'footer-text default text',
 				'type' => 'option',
 				'transport' => 'refresh', // refresh (default), postMessage
@@ -114,11 +115,11 @@ class PMPro_WP_Customizer {
 		);
 
 		$pmpro_manager->add_control(
-			'pmpro[the_footer]', array(
+			'pmpro_footer_text', array(
 				'section'   => 'pmpro_section',
 				'type'   => 'text', // text (default), checkbox, radio, select, dropdown-pages
-			'label'       => 'Default Footer Text',
-			'settings'    => 'pmpro[the_footer]',
+			'label'       => 'Change Footer Text',
+			'settings'    => 'pmpro_footer_text',
 			'description' => 'Description of this text input setting in ' . __FUNCTION__ . ' for Default Footer Text',
 			)
 		);
@@ -136,7 +137,7 @@ class PMPro_WP_Customizer {
 			'menu_radio', array(
 				'section'     => 'pmpro_section',
 				'type'        => 'radio',
-				'label'       => 'Menu Alignment Radio Buttons',
+				'label'       => 'Menu Text Radio Buttons',
 				'description' => 'Description of this radio setting in ' . __FUNCTION__,
 				'choices'     => array(
 					'1' => 'left',
@@ -147,6 +148,155 @@ class PMPro_WP_Customizer {
 			)
 		);
 
+	}
+
+	/**
+	 * The pmpro_section function adds a new section
+	 * to the Customizer to display the settings and
+	 * controls that we build.
+	 *
+	 * @param  [type] $pmpro_manager [description]
+	 * @return [type]             [description]
+	 */
+	private static function pmpro_text_changes( $pmpro_manager ) {
+		$pmpro_manager->add_section(
+			'pmpro_text_changes', array(
+				'title'          => 'PMPro Text Changes',
+				'priority'       => 19,
+				'panel'          => 'pmpro_customizer_panel',
+				'description' => 'PMPro Customizer Text Changes makles it easier for you to customize the text from the plugin and add ons.',
+			)
+		);
+
+		$pmpro_manager->add_setting(
+			'page_text_toggle', array(
+				'default' => 1,
+			)
+		);
+
+		$pmpro_manager->add_control(
+			new Soderland_Toggle_Control(
+				$pmpro_manager,
+				'page_text_toggle', array(
+					'label'     => __( 'Make PMPro Changes', 'pmpro-customizer' ),
+					'section'   => 'pmpro_text_changes',
+					'priority'  => 10,
+					'type'      => 'ios',
+				)
+			)
+		);
+
+		$pmpro_manager->add_setting(
+			'pmpro_text_input_1', array(
+				'default' => 'What the plugin says',
+				'type' => 'option',
+				'transport' => 'refresh', // refresh (default), postMessage
+			// 'capability' => 'edit_theme_options',
+			// 'sanitize_callback' => 'sanitize_key'
+			)
+		);
+
+		$pmpro_manager->add_control(
+			'pmpro_text_input_1', array(
+				'section'   => 'pmpro_text_changes',
+				'type'   => 'text', // text (default), checkbox, radio, select, dropdown-pages
+			'label'       => 'First Text Change Input',
+			'settings'    => 'pmpro_text_input_1',
+			'description' => 'Description of this text input setting in ' . __FUNCTION__ . ' for Text Changes',
+			)
+		);
+		$pmpro_manager->add_setting(
+			'pmpro_text_output_1', array(
+				'default' => 'What you want to say',
+				'type' => 'option',
+				'transport' => 'refresh', // refresh (default), postMessage
+			// 'capability' => 'edit_theme_options',
+			// 'sanitize_callback' => 'sanitize_key'
+			)
+		);
+
+		$pmpro_manager->add_control(
+			'pmpro_text_output_1', array(
+				'section'   => 'pmpro_text_changes',
+				'type'   => 'text', // text (default), checkbox, radio, select, dropdown-pages
+			'label'       => 'First Text Change Output',
+			'settings'    => 'pmpro_text_output_1',
+			'description' => 'Description of this text input setting in ' . __FUNCTION__ . ' for Text Changes',
+			)
+		);
+		$pmpro_manager->add_setting(
+			'pmpro_text_domain_1', array(
+				'default' => 'Where is the translatable text?',
+				'type' => 'option',
+				'transport' => 'refresh', // refresh (default), postMessage
+			// 'capability' => 'edit_theme_options',
+			// 'sanitize_callback' => 'sanitize_key'
+			)
+		);
+
+		$pmpro_manager->add_control(
+			'pmpro_text_domain_1', array(
+				'section'   => 'pmpro_text_changes',
+				'type'   => 'text', // text (default), checkbox, radio, select, dropdown-pages
+			'label'       => 'paid-memberships-pro',
+			'settings'    => 'pmpro_text_domain_1',
+			'description' => 'Domain of this text change',
+			)
+		);
+		// $pmpro_manager->add_setting(
+		// 'pmpro_text_input_2', array(
+		// 'default' => 'What the plugin says',
+		// 'type' => 'option',
+		// 'transport' => 'refresh', // refresh (default), postMessage
+		// 'capability' => 'edit_theme_options',
+		// 'sanitize_callback' => 'sanitize_key'
+		// )
+		// );
+		// $pmpro_manager->add_control(
+		// 'pmpro_text_input_2', array(
+		// 'section'   => 'pmpro_text_changes',
+		// 'type'   => 'text', // text (default), checkbox, radio, select, dropdown-pages
+		// 'label'       => 'Second Text Change Input',
+		// 'settings'    => 'pmpro_text_input_2',
+		// 'description' => 'Description of this text input setting in ' . __FUNCTION__ . ' for Text Changes',
+		// )
+		// );
+		// $pmpro_manager->add_setting(
+		// 'pmpro_text_output_2', array(
+		// 'default' => 'What you want to say',
+		// 'type' => 'option',
+		// 'transport' => 'refresh', // refresh (default), postMessage
+		// 'capability' => 'edit_theme_options',
+		// 'sanitize_callback' => 'sanitize_key'
+		// )
+		// );
+		// $pmpro_manager->add_control(
+		// 'pmpro_text_output_2', array(
+		// 'section'   => 'pmpro_text_changes',
+		// 'type'   => 'text', // text (default), checkbox, radio, select, dropdown-pages
+		// 'label'       => 'Second Text Change Output',
+		// 'settings'    => 'pmpro_text_output_2',
+		// 'description' => 'Description of this text input setting in ' . __FUNCTION__ . ' for Text Changes',
+		// )
+		// );
+		// $pmpro_manager->add_setting(
+		// 'pmpro_text_domain_2', array(
+		// 'default' => 'What the plugin says',
+		// 'type' => 'option',
+		// 'transport' => 'refresh', // refresh (default), postMessage
+		// 'capability' => 'edit_theme_options',
+		// 'sanitize_callback' => 'sanitize_key'
+		// )
+		// );
+		// $pmpro_manager->add_control(
+		// 'pmpro_text_domain_2', array(
+		// 'section'   => 'pmpro_text_changes',
+		// 'type'   => 'text', // text (default), checkbox, radio, select, dropdown-pages
+		// 'label'       => 'Second Text Change Domain',
+		// 'settings'    => 'pmpro_text_domain_2',
+		// 'description' => 'Domain of this text change',
+		// )
+		// );
 	}
 
 	/**
@@ -244,7 +394,7 @@ class PMPro_WP_Customizer {
 	}
 
 
-	public function set_customizer_preview_url() {
+	public static function set_customizer_preview_url() {
 		global $wp_customize;
 		// if ( ! isset( $_GET['url'] ) ) {
 			// $wp_customize->set_preview_url( get_permalink( get_page_by_title( 'Launchpad' ) ) );

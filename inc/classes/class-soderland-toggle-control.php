@@ -34,7 +34,7 @@ class Soderland_Toggle_Control extends \WP_Customize_Control {
 	}
 
 	public function enqueue() {
-		wp_enqueue_script( 'customizer-toggle-control', plugins_url( '/../functions/wordpress-customizer/js/customizer-toggle-control.js', __FILE__ ), array( 'jquery' ), rand(), true );
+		wp_enqueue_script( 'customizer-toggle-control', plugins_url( '/../js/customizer-toggle-control.js', __FILE__ ), array( 'jquery' ), rand(), true );
 		wp_enqueue_style( 'pure-css-toggle-buttons', plugins_url( '/../css/soderland-toggle-buttons.css', __FILE__ ), array(), rand() );
 		$css = '
 			.disabled-control-title {

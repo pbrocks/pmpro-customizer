@@ -26,11 +26,25 @@ class PMPro_Customizer_Additions {
 	public static function init() {
 		add_shortcode( 'pmpro_member_data', array( __CLASS__, 'pmpro_member_data_shortcode' ) );
 		// add_action( 'template_redirect', array( __CLASS__, 'pmpromh_template_redirect_homepage' ) );
-		add_filter( 'login_redirect', array( __CLASS__, 'pmpro_multisite_login_redirect' ), 10, 3 );
-		// add_filter( 'login_redirect', 'pmpromh_login_redirect', 10, 3 );
+		// add_filter( 'login_redirect', array( __CLASS__, 'pmpro_multisite_login_redirect' ), 10, 3 );
+		add_filter( 'gettext', array( __CLASS__, 'pmpro_gettext_changes' ), 10, 3 );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'customizer_additions_enqueue' ) );
 		add_action( 'admin_menu', array( __CLASS__, 'pmpro_quick_dashboard_menu' ) );
 	}
+
+	/**
+	 * When making text changes you'll need to send 3 arguments.
+	 *
+	 * @author pbrocks
+	 * @return string
+	 */
+	public static function pmpro_gettext_changes( $translated_text, $text, $domain ) {
+		if ( 'paid-memberships-pro' === $domain ) {
+			$translated_text = str_replace( get_option( 'pmpro_text_input_1' ), get_option( 'pmpro_text_output_1' ), $translated_text );
+		}
+		return $translated_text;
+	}
+
 	/**
 	 * Shortcode to retrieve information about a user startdate/enddate.
 	 *
